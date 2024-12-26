@@ -48,24 +48,49 @@ backend/
 ├── app/
 │ ├── init.py
 │ ├── models/
-│ │ ├── transaccion.py # Clase para manejar movimientos
-│ │ ├── categoria.py # Clase para manejar categorías
-│ │ ├── objetivo.py # Clase para manejar objetivos
-│ │ └── auditoria.py # Clase para registrar acciones
+│ │ ├── transaccion.py      # Clase para manejar movimientos
+│ │ ├── categoria.py        # Clase para manejar categorías
+│ │ ├── objetivo.py         # Clase para manejar objetivos
+│ │ └── auditoria.py        # Clase para registrar acciones
 │ ├── controllers/
-│ │ ├── transacciones.py # Rutas relacionadas con movimientos
-│ │ ├── categorias.py # Rutas relacionadas con categorías
-│ │ ├── objetivos.py # Rutas relacionadas con objetivos
-│ │ └── reportes.py # Rutas relacionadas con reportes
+│ │ ├── transacciones.py    # Rutas relacionadas con movimientos
+│ │ ├── categorias.py       # Rutas relacionadas con categorías
+│ │ ├── objetivos.py        # Rutas relacionadas con objetivos
+│ │ └── reportes.py         # Rutas relacionadas con reportes
 │ ├── services/
-│ │ ├── reglas.py # Categorización automática
-│ │ ├── alertas.py # Generación de alertas
-│ │ └── exportacion.py # Generación de archivos CSV
-│ ├── config.py # Configuración del entorno
-│ ├── config_dev.py # Configuración para desarrollo
-│ ├── config_prd.py # Configuración para producción
+│ │ ├── reglas.py           # Categorización automática
+│ │ ├── alertas.py          # Generación de alertas
+│ │ └── exportacion.py      # Generación de archivos CSV
+│ ├── config.py             # Configuración del entorno
+│ ├── config_dev.py         # Configuración para desarrollo
+│ ├── config_prd.py         # Configuración para producción
 │ └── init.py
-├── run.py # Archivo principal para ejecutar el servidor
-├── requirements.txt # Dependencias de Python
-└── .env # Variables de entorno
+├── run.py                  # Archivo principal para ejecutar el servidor
+├── requirements.txt        # Dependencias de Python
+└── .env                    # Variables de entorno
+```
+
+### **Frontend**
+
+```bash
+frontend/
+├── public/
+│ └── index.html            # Archivo estructural
+├── src/
+│ ├── components/
+│ │ ├── Alertas.js          # Componente para mostrar alertas
+│ │ ├── Reportes.js         # Componente para mostrar reportes
+│ │ ├── Reglas.js           # Componente para gestionar reglas
+│ │ └── Navbar.js           # Componente de navegación
+│ ├── services/
+│ │ └── api.js              # Servicios para interactuar con la API
+│ ├── views/
+│ │ ├── Dashboard.js        # Vista principal
+│ │ └── ReportesPage.js     # Vista para los reportes
+│ ├── App.js                # Componente raíz
+│ ├── index.js              # Punto de entrada de React
+│ └── style.css             # Estilos globales
+├── .env.development        # Variables de entorno para desarrollo
+├── .env.production         # Variables de entorno para producción
+└── package.json            # Dependencias de React
 ```
