@@ -7,6 +7,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "clave_development")  # Clave secreta para 
 # Configuración de la base de datos
 SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///local_dev.db")  # SQLite por defecto
 SQLALCHEMY_TRACK_MODIFICATIONS = False  # Deshabilitar el seguimiento de modificaciones (mejora el rendimiento)
+SQLALCHEMY_ECHO = True # Mostrar las consultas SQL en consola
 
 # Configuración de CORS
 CORS_HEADERS = "Content-Type"

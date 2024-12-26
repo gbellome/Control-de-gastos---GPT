@@ -1,10 +1,25 @@
-from app.models import db, BaseModel
-from datetime import datetime
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
+from app import db
 
-class Auditoria(BaseModel):
-    __tablename__ = "auditoria"
+class Auditoria(db.Model):
+    __tablename__ = 'auditorias'
 
-    id = db.Column(db.Integer, primary_key=True)
-    accion = db.Column(db.String(255), nullable=False)
-    fecha_hora = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    detalles = db.Column(db.Text, nullable=True)
+    id = Column(Integer, primary_key=True)
+    accion = Column(String(255), nullable=False)
+    fecha = Column(DateTime, nullable=False)
+    
+    # Relación con usuario
+    usuario_id = Column(Integer, ForeignKey('usuarios.id'))
+    usuario = relationship('Usuario', back_populates='auditorias')
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "accion": self.accion,
+            "fecha": self.fecha,
+            "usuario_id": self.usuario_id,
+        }
+
+    def __repr__(self):
+        return f'<Auditoria {self.accion}, {self.fecha}>'

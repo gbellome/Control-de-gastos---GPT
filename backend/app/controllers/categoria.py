@@ -1,16 +1,15 @@
 from flask import Blueprint, request, jsonify
-from app.models.categoria import Categoria
-from app import db
+from app.models import db, Categoria
 
-categorias_bp = Blueprint("categorias", __name__)
+categoria_bp = Blueprint("categoria", __name__)
 
-@categorias_bp.route("/", methods=["GET"])
+@categoria_bp.route("/", methods=["GET"])
 def listar_categorias():
     """Obtiene todas las categorías."""
     categorias = Categoria.query.all()
     return jsonify([categoria.to_dict() for categoria in categorias]), 200
 
-@categorias_bp.route("/", methods=["POST"])
+@categoria_bp.route("/", methods=["POST"])
 def crear_categoria():
     """Crea una nueva categoría."""
     data = request.get_json()
@@ -19,7 +18,7 @@ def crear_categoria():
     db.session.commit()
     return jsonify(nueva_categoria.to_dict()), 201
 
-@categorias_bp.route("/<int:id>", methods=["PUT"])
+@categoria_bp.route("/<int:id>", methods=["PUT"])
 def actualizar_categoria(id):
     """Actualiza una categoría existente."""
     data = request.get_json()
@@ -28,7 +27,7 @@ def actualizar_categoria(id):
     db.session.commit()
     return jsonify(categoria.to_dict()), 200
 
-@categorias_bp.route("/<int:id>", methods=["DELETE"])
+@categoria_bp.route("/<int:id>", methods=["DELETE"])
 def eliminar_categoria(id):
     """Elimina una categoría."""
     categoria = Categoria.query.get_or_404(id)

@@ -1,15 +1,29 @@
-from app.models import db, BaseModel
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy.orm import relationship
+from app import db
 
-class Objetivo(BaseModel):
-    __tablename__ = "objetivos_gastos"
+class Objetivo(db.Model):
+    __tablename__ = 'objetivos'
 
-    id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(255), nullable=False)
-    porcentaje_sueldo = db.Column(db.Float, nullable=False)  # Ejemplo: 0.2 para 20%
-    sueldo_base = db.Column(db.Float, nullable=False)
-    monto_maximo = db.Column(db.Float, nullable=False)
-    mes = db.Column(db.String(7), nullable=False)  # Formato: "YYYY-MM"
+    id = Column(Integer, primary_key=True)
+    nombre = Column(String(100), nullable=False)
+    porcentaje_sueldo = Column(Float, nullable=False)
+    sueldo_base = Column(Float, nullable=False)
+    mes = Column(String(20), nullable=False)
 
-    # Relación con Categorías (si aplica)
-    id_categoria = db.Column(db.Integer, db.ForeignKey("categorias.id"), nullable=True)
-    categoria = db.relationship("Categoria", back_populates="objetivos")
+    # Relación con usuario
+    usuario_id = Column(Integer, ForeignKey('usuarios.id'))
+    usuario = relationship('Usuario', back_populates='objetivos')
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "nombre": self.nombre,
+            "porcentaje_sueldo": self.porcentaje_sueldo,
+            "sueldo_base": self.sueldo_base,
+            "mes": self.mes,
+            "usuario_id": self.usuario_id,
+        }
+
+    def __repr__(self):
+        return f'<Objetivo {self.nombre}, {self.porcentaje_sueldo * self.sueldo_base}>'

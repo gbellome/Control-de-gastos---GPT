@@ -2,9 +2,11 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_migrate import Migrate
 
-# Crear instancia de SQLAlchemy
+# Crear instancias
 db = SQLAlchemy()
+migrate = Migrate()
 
 def create_app():
     """
@@ -23,20 +25,14 @@ def create_app():
 
     # Inicializar extensiones
     db.init_app(app)
+    migrate.init_app(app, db)
     CORS(app)
 
     # Registrar blueprints
-    from app.controllers.transacciones import transacciones_bp
-    from app.controllers.categorias import categorias_bp
-    from app.controllers.objetivos import objetivos_bp
-    from app.controllers.reportes import reportes_bp
+    from app.controllers import register_blueprints
+    register_blueprints(app)
 
-    app.register_blueprint(transacciones_bp, url_prefix="/api/transacciones")
-    app.register_blueprint(categorias_bp, url_prefix="/api/categorias")
-    app.register_blueprint(objetivos_bp, url_prefix="/api/objetivos")
-    app.register_blueprint(reportes_bp, url_prefix="/api/reportes")
-
-    # Rutas base (opcional)
+    # Rutas base
     @app.route("/")
     def index():
         return {"message": "API Backend en Flask está funcionando correctamente."}

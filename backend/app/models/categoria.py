@@ -1,10 +1,25 @@
-from app.models import db, BaseModel
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+from app import db
 
-class Categoria(BaseModel):
-    __tablename__ = "categorias"
+class Categoria(db.Model):
+    __tablename__ = 'categorias'
 
-    id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(255), nullable=False, unique=True)
+    id = Column(Integer, primary_key=True)
+    nombre = Column(String(100), nullable=False)
+    descripcion = Column(String(255), nullable=True)
 
-    # Relación con Transacciones
-    transacciones = db.relationship("Transaccion", back_populates="categoria", cascade="all, delete")
+    # Relación con transacciones
+    transacciones = relationship('Transaccion', back_populates='categoria')
+    # Relación con reglas de categorización
+    reglas_categorizacion = relationship('ReglaCategorizacion', back_populates='categoria')
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "nombre": self.nombre,
+            "descripcion": self.descripcion
+        }
+
+    def __repr__(self):
+        return f'<Categoria {self.nombre}>'

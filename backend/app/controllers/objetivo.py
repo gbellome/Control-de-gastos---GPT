@@ -1,22 +1,21 @@
 from flask import Blueprint, request, jsonify
-from app.models.objetivo import Objetivo
-from app import db
+from app.models import db, Objetivo
 
-objetivos_bp = Blueprint("objetivos", __name__)
+objetivo_bp = Blueprint("objetivos", __name__)
 
-@objetivos_bp.route("/", methods=["GET"])
+@objetivo_bp.route("/", methods=["GET"])
 def listar_objetivos():
     """Obtiene todos los objetivos."""
     objetivos = Objetivo.query.all()
     return jsonify([objetivo.to_dict() for objetivo in objetivos]), 200
 
-@objetivos_bp.route("/", methods=["POST"])
+@objetivo_bp.route("/", methods=["POST"])
 def crear_objetivo():
     """Crea un nuevo objetivo."""
     data = request.get_json()
     nuevo_objetivo = Objetivo(
         nombre=data["nombre"],
-        porcentaje_sueldo=data["porcentaje_sueldo"],
+        porcentaje_sueldo=data["porcentaje_sueldo"],    
         sueldo_base=data["sueldo_base"],
         mes=data["mes"]
     )
@@ -24,7 +23,7 @@ def crear_objetivo():
     db.session.commit()
     return jsonify(nuevo_objetivo.to_dict()), 201
 
-@objetivos_bp.route("/<int:id>", methods=["PUT"])
+@objetivo_bp.route("/<int:id>", methods=["PUT"])
 def actualizar_objetivo(id):
     """Actualiza un objetivo existente."""
     data = request.get_json()
@@ -36,7 +35,7 @@ def actualizar_objetivo(id):
     db.session.commit()
     return jsonify(objetivo.to_dict()), 200
 
-@objetivos_bp.route("/<int:id>", methods=["DELETE"])
+@objetivo_bp.route("/<int:id>", methods=["DELETE"])
 def eliminar_objetivo(id):
     """Elimina un objetivo."""
     objetivo = Objetivo.query.get_or_404(id)
