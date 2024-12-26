@@ -1,27 +1,34 @@
 import csv
+from models import db, Transaccion
 from io import StringIO
-from app.models.transaccion import Transaccion
-from app.models.categoria import Categoria
-from app import db
 
-def exportar_transacciones_csv():
+def exportar_reportes(usuario_id, mes, anio):
     """
-    Exporta todas las transacciones a un archivo CSV.
+    Este servicio genera un archivo CSV con las transacciones de un usuario para un mes específico.
     """
-    transacciones = db.session.query(
-        Transaccion.fecha,
-        Transaccion.descripcion,
-        Transaccion.monto,
-        Categoria.nombre.label("categoria")
-    ).join(Categoria, Transaccion.categoria_id == Categoria.id).all()
+    transacciones = Transaccion.query.filter(
+        Transaccion.usuario_id == usuario_id,
+        Transaccion.fecha.month == mes,
+        Transaccion.fecha.year == anio
+    ).all()
 
-    # Crear un archivo CSV en memoria
     output = StringIO()
     writer = csv.writer(output)
-    writer.writerow(["Fecha", "Descripción", "Monto", "Categoría"])
-    for transaccion in transacciones:
-        writer.writerow([transaccion.fecha, transaccion.descripcion, transaccion.monto, transaccion.categoria])
+    
+    # Escribir el encabezado del archivo CSV
+    writer.writerow(["ID", "Monto", "Fecha", "Descripción", "Categoria", "Banco", "Tipo"])
 
-    # Retornar el contenido del archivo CSV
+    # Escribir las transacciones
+    for transaccion in transacciones:
+        writer.writerow([
+            transaccion.id,
+            transaccion.monto,
+            transaccion.fecha.strftime('%Y-%m-%d'),
+            transaccion.descripcion,
+            transaccion.categoria.nombre if transaccion.categoria else "N/A",
+            transaccion.banco.nombre if transaccion.banco else "N/A",
+            transaccion.tipo
+        ])
+    
     output.seek(0)
     return output.getvalue()
