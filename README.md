@@ -43,6 +43,7 @@
 
 ### **Backend**
 
+```bash
 backend/
 ├── app/
 │ ├── init.py
@@ -67,3 +68,4 @@ backend/
 ├── run.py # Archivo principal para ejecutar el servidor
 ├── requirements.txt # Dependencias de Python
 └── .env # Variables de entorno
+```
