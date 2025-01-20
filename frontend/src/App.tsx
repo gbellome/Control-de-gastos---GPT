@@ -1,35 +1,98 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.tsx
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import { ThemeProvider, createTheme, Theme } from "@mui/material/styles";
+import Login from "./components/auth/Login";
+import Dashboard from "./components/dashboard/Dashboard";
+import ColorPicker from "./components/settings/ColorPicker";
+import ExpensePrediction from "./components/reports/ExpensePrediction";
+import TrendAnalysis from "./components/reports/TrendAnalysis";
+import { UserProvider, useUser } from "./contexts/UserContext";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const [theme, setTheme] = useState<Theme>(
+    createTheme({
+      palette: {
+        primary: { main: "#1976d2" },
+        secondary: { main: "#dc004e" },
+      },
+    })
+  );
+
+  const handleColorChange = (colors: {
+    primary: string;
+    secondary: string;
+  }) => {
+    const newTheme = createTheme({
+      palette: {
+        primary: { main: colors.primary },
+        secondary: { main: colors.secondary },
+      },
+    });
+    setTheme(newTheme);
+    localStorage.setItem("theme", JSON.stringify(colors));
+  };
+
+  useEffect(() => {
+    const savedTheme = JSON.parse(localStorage.getItem("theme") || "{}");
+    if (savedTheme.primary && savedTheme.secondary) {
+      handleColorChange(savedTheme);
+    }
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <UserProvider>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/dashboard"
+              element={<PrivateRoute component={Dashboard} />}
+            />
+            <Route
+              path="/color-picker"
+              element={
+                <PrivateRoute>
+                  <ColorPicker onSave={handleColorChange} />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/expense-prediction"
+              element={<PrivateRoute component={ExpensePrediction} />}
+            />
+            <Route
+              path="/trend-analysis"
+              element={<PrivateRoute component={TrendAnalysis} />}
+            />
+            <Route path="*" element={<Navigate to="/login" />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    </UserProvider>
+  );
+};
+
+interface PrivateRouteProps {
+  component?: React.ComponentType;
+  children?: React.ReactNode;
 }
 
-export default App
+const PrivateRoute: React.FC<PrivateRouteProps> = ({
+  component: Component,
+  children,
+}) => {
+  const user = useUser();
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+  return Component ? <Component /> : <>{children}</>;
+};
+
+export default App;
