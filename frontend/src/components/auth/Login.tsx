@@ -7,6 +7,7 @@ import { Navigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../firebase/firebaseConfig";
+import styles from './styles/Login.module.scss'
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -33,7 +34,7 @@ const Login: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" className={styles.Container}>
       <Typography variant="h4" component="h1" gutterBottom>
         Login
       </Typography>
@@ -54,11 +55,11 @@ const Login: React.FC = () => {
           margin="normal"
           required
         />
-        <Button type="submit" variant="contained" color="primary" fullWidth>
+        <Button className={styles.Button} type="submit" variant="contained" color="primary" fullWidth>
           Login
         </Button>
       </form>
-      <Button
+      <Button className={styles.Button} 
         variant="contained"
         color="secondary"
         fullWidth

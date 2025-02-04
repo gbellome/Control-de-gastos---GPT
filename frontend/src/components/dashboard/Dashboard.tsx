@@ -3,7 +3,9 @@ import React from 'react';
 import { Container, Grid, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar } from 'recharts';
+import { getAuth, signOut } from 'firebase/auth';
 import Transactions from '../transactions/Transactions';
+import ResponsiveAppBar from '../navbar/Navbar';
 
 const data = [
   { name: 'Enero', Food: 400, Rent: 240, Utilities: 240 },
@@ -16,11 +18,24 @@ const data = [
 ];
 
 const Dashboard: React.FC = () => {
+
+  const auth = getAuth()
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {console.log('User signed out')})
+      .catch((error) => {console.log('Eror signed out: ', error)})
+  }
+
+
   return (
     <Container maxWidth="lg">
+      <ResponsiveAppBar/>
       <Typography variant="h4" component="h1" gutterBottom>
         Dashboard
       </Typography>
+      <Button variant="contained" color="secondary" onClick={handleLogout}>
+        Logout
+      </Button>
       <Grid container spacing={3}>
         {/* Primera Fila */}
         <Grid item xs={12} md={3}>
