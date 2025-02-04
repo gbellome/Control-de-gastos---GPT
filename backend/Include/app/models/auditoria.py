@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from app import db
+from Include.app import db
 
 class Auditoria(db.Model):
     __tablename__ = 'auditorias'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
     accion = Column(String(255), nullable=False)

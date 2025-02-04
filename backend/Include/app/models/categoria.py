@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from app import db
+from Include.app import db
 
 class Categoria(db.Model):
     __tablename__ = 'categorias'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
     nombre = Column(String(100), nullable=False)

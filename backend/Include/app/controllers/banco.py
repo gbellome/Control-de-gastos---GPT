@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import db, Banco
+from Include.app.models import db, Banco
 
 banco_bp = Blueprint("banco", __name__)
 

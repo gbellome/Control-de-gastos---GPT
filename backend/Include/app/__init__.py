@@ -17,9 +17,9 @@ def create_app():
     # Configuración de la aplicación (según el entorno)
     env = os.getenv("FLASK_ENV", "development")
     if env == "development":
-        app.config.from_object("app.config_dev")
+        app.config.from_object("Include.app.config_dev")
     elif env == "production":
-        app.config.from_object("app.config_prd")
+        app.config.from_object("Include.app.config_prd")
     else:
         raise ValueError(f"Entorno no válido: {env}")
 
@@ -29,7 +29,7 @@ def create_app():
     CORS(app)
 
     # Registrar blueprints
-    from app.controllers import register_blueprints
+    from Include.app.controllers import register_blueprints
     register_blueprints(app)
 
     # Rutas base

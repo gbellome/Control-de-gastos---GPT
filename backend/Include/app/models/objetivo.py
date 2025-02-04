@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
-from app import db
+from Include.app import db
 
 class Objetivo(db.Model):
     __tablename__ = 'objetivos'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
     nombre = Column(String(100), nullable=False)

@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import db, Objetivo
+from Include.app.models import db, Objetivo
 
 objetivo_bp = Blueprint("objetivos", __name__)
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import db, ReglaCategorizacion
+from Include.app.models import db, ReglaCategorizacion
 
 regla_categorizacion_bp = Blueprint("regla_categorizacion", __name__)
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import db, Auditoria
+from Include.app.models import db, Auditoria
 
 auditoria_bp = Blueprint("auditoria", __name__)
 

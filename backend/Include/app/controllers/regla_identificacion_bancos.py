@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import db, ReglaIdentificacionBanco
+from Include.app.models import db, ReglaIdentificacionBanco
 
 regla_identificacion_bp = Blueprint("regla_identificacion_bancos", __name__)
 

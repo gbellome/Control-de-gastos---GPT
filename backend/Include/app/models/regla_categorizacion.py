@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app import db
+from Include.app import db
 
 class ReglaCategorizacion(db.Model):
     __tablename__ = 'reglas_categorizacion'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
     expresion_regular = Column(String(255), nullable=False)
